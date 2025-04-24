@@ -1,0 +1,10 @@
+@Web_Api_E_commerc_HostAddress = https://localhost:7259
+
+GET {{Web_Api_E_commerc_HostAddress}}/api/weatherforecast/
+Accept: application/json
+
+
+###
+
+GET {{Web_Api_E_commerc_HostAddress}}/api/Products/
+Accept: application/json
