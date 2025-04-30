@@ -19,7 +19,7 @@ namespace Presistence.Repositraces
 
         public async Task<CustomerBasket?> GetBasketAsync(string Id)
         {
-            var data = await _database.StringGetAsync(Id);
+            var data = await _database.StringGetAsync(Id); //json
             if (data.IsNullOrEmpty) return null;
             return JsonSerializer.Deserialize<CustomerBasket>(data);
         }
