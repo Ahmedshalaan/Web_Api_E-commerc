@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entities.Idenetity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {

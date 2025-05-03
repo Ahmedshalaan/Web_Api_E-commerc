@@ -1,4 +1,5 @@
 ﻿using Domain.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Shared.ErrorModels;
 using System.Net;
 
@@ -55,19 +56,27 @@ namespace Web_Api_E_commerc.Middle_Wares
         {
             context.Response.ContentType = "application/json";
 
-            context.Response.StatusCode = exception switch
-            {
-                NotFound_Excption => (int)HttpStatusCode.NotFound,
-                _ => (int)HttpStatusCode.InternalServerError
-            };
-
             var errorResponse = new ErrorDetails
             {
-                StatusCode = context.Response.StatusCode,
                 ErrorMessage = exception.Message
             };
+            context.Response.StatusCode = exception switch
+            {
+                NotFound_Excption => (int)HttpStatusCode.NotFound,//404
+                UnAusthorizedException => (int)HttpStatusCode.Unauthorized,//401
+                ValidationExcption validationExcption =>HandelValidationExcption(validationExcption, errorResponse),//400
+                _ => (int)HttpStatusCode.InternalServerError//500
+            };
+
+            errorResponse.StatusCode = context.Response.StatusCode;
 
             await context.Response.WriteAsync(errorResponse.ToString());
+        }
+        private int HandelValidationExcption(ValidationExcption validationExcption, ErrorDetails errorResponse)
+        {
+            errorResponse.ErrorMessage = validationExcption.Errors.ToString();
+            return (int)HttpStatusCode.BadRequest;
+
         }
     }
 }
