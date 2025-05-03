@@ -14,7 +14,8 @@ namespace Web_Api_E_commerc
 
             #region Dependency Injection
             //core
-            builder.Services.AddCoreService();
+
+            builder.Services.AddCoreService(builder.Configuration);
             #endregion
 
 
@@ -42,9 +43,11 @@ namespace Web_Api_E_commerc
 
             #region Static Files Configuration
             app.UseStaticFiles();
+            
             #endregion
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();    
             app.UseAuthorization();
             app.MapControllers();
             #endregion
@@ -52,8 +55,6 @@ namespace Web_Api_E_commerc
             app.Run();
         }
 
-        #region Database Initialization
-       
-        #endregion
+        
     }
 }

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Presistence.IdentityMigration
+namespace Presistence.Data.Identity
 {
     /// <inheritdoc />
-    public partial class initialCreateIdentity : Migration
+    public partial class initalIndentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

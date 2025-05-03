@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared;
 using Shared.Dto;
@@ -6,13 +7,8 @@ using Shared.ErrorModels;
 using System.Net;
 
 namespace Presentation
-{
-    [ApiController]
-    //varabel Sgment =>(("api/[controller]"))
-    [Route("api/[controller]")]  // BaseUrl/api/Products
-
-    //                                      //Primary Ctor               //install microsoft.AspNetCore.App               
-    public class ProductsController(IService_Manager service_Manager) : ControllerBase
+{      [Authorize]                               //Primary Ctor               //install microsoft.AspNetCore.App               
+    public class ProductsController(IService_Manager service_Manager) : ApiController
     {
         #region Get All Products
         [HttpGet] //Get L:BaseUrl/api/Products
@@ -47,9 +43,7 @@ namespace Presentation
         #endregion
 
         #region Get All Product By Id
-        [ProducesResponseType( typeof(ErrorDetails),(int)HttpStatusCode.NotFound)] 
-        [ProducesResponseType( typeof(ErrorDetails),(int)HttpStatusCode.InternalServerError)] 
-        [ProducesResponseType( typeof(ValidationErrorResponse),(int)HttpStatusCode.BadRequest)]
+       
         [ProducesResponseType(typeof(ProductResultDto), (int)HttpStatusCode.OK)]
         [HttpGet("{Id}")] //Get BaseUrl/api/Products/5
         public async Task<ActionResult<ProductResultDto>> GetProductById(int Id)

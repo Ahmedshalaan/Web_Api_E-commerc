@@ -1,13 +1,19 @@
-﻿ 
+﻿
+using Microsoft.AspNetCore.Identity;
+
 namespace Presistence.Data
 {
     public class DbIntializer : IDbIntializer
     {
         private readonly ApplicationDbcontext _dbcontext;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public DbIntializer(ApplicationDbcontext context)
+        public DbIntializer(ApplicationDbcontext context, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _dbcontext = context;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task IntializeAsync()
@@ -15,8 +21,8 @@ namespace Presistence.Data
             try
             {
                 //Create database if not exists && Applying Any Pending migration
-                if(_dbcontext.Database.GetPendingMigrations().Any())
-                await _dbcontext.Database.MigrateAsync();
+                if (_dbcontext.Database.GetPendingMigrations().Any())
+                    await _dbcontext.Database.MigrateAsync();
 
                 // ======================== Seed ProductTypes ========================
 
@@ -74,6 +80,45 @@ namespace Presistence.Data
             {
                 // Add logging or rethrow
                 throw new Exception("An error occurred during DB initialization", ex);
+            }
+        }
+
+        public async Task IntializeIdentityAsync()
+        {
+            // Seed roles
+            if (!_roleManager.Roles.Any())
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new IdentityRole("SuperAdmin")); // تم تصحيح الخطأ الإملائي هنا
+            }
+
+            // Seed users - تم نقل هذا خارج شرط ال Roles.Any()
+            var adminUser = await _userManager.FindByNameAsync("admin");
+            if (adminUser == null)
+            {
+                adminUser = new User()
+                {
+                    DisplayName = "Admin",
+                    UserName = "admin",
+                    Email = "admin@gmail.com",
+                    PhoneNumber = "1234567890",
+                };
+            }
+
+            var superAdminUser = await _userManager.FindByNameAsync("superadmin");
+            if (superAdminUser == null)
+            {
+                superAdminUser = new User()
+                {
+                    DisplayName = "SuperAdmin",
+                    UserName = "superadmin",
+                    Email = "superadmin@gmail.com",
+                    PhoneNumber = "1234567890",
+                };
+                await _userManager.CreateAsync(adminUser, "Admin@123");
+                await _userManager.AddToRoleAsync(adminUser, "Admin");
+                await _userManager.CreateAsync(superAdminUser, "Admin@1234");
+                await _userManager.AddToRoleAsync(superAdminUser, "SuperAdmin");
             }
         }
     }

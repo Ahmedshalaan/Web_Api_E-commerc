@@ -8,7 +8,7 @@ using Presistence.Identity;
 
 #nullable disable
 
-namespace Presistence.IdentityMigration
+namespace Presistence.Data.Identity
 {
     [DbContext(typeof(IdentityAppDbContext))]
     partial class IdentityAppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace Presistence.IdentityMigration
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Idenetity.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -280,11 +280,11 @@ namespace Presistence.IdentityMigration
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Address", b =>
+            modelBuilder.Entity("Domain.Entities.Idenetity.Address", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithOne("Address")
-                        .HasForeignKey("Domain.Entities.Address", "UserId")
+                        .HasForeignKey("Domain.Entities.Idenetity.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

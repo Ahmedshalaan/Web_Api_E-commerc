@@ -6,5 +6,6 @@
         //Signature for Each And Every Service
         public IProductService ProductService { get; }
         public IBasketService  basketService { get; }
+        public IAuthenticationService   authenticationService { get; }
     }
 }
