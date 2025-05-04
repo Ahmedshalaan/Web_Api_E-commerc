@@ -4,10 +4,29 @@ namespace Domain.Entities.orderEntities
 {
     public class Order :BaseEntitiyID<Guid>
     {
+        public Order()
+        {
+        }
+
+        public Order(string userEmail,
+            OrderAddress shippingAddress, 
+            ICollection<OrderItem> orderItems, 
+             DeliveryMethod deliveryMethod, 
+             decimal subTotal
+             )
+        {
+            UserEmail = userEmail;
+            this.shippingAddress = shippingAddress;
+            OrderItems = orderItems;
+            this.paymentStatus = paymentStatus;
+            this.deliveryMethod = deliveryMethod;
+             SubTotal = subTotal;
+         }
+
         public string UserEmail { get; set; }
         public OrderAddress  shippingAddress { get; set; }
         //order ==> Sandwich[orderItem] ==> Coffee [orderItem02] ==> Pizza [orderItem03]
-        public List<OrderItem> OrderItems { get; set; } = [];
+        public ICollection<OrderItem> OrderItems { get; set; } = [];
         public OrderPaymentStatus paymentStatus { get; set; } = OrderPaymentStatus.Pending; //By Default 
         public DeliveryMethod  deliveryMethod { get; set; }
         public int? DeliveryMethodID { get; set; }
