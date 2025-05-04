@@ -12,5 +12,7 @@
          public decimal SubTotal { get; init; }//OrderItem.Price * OrderItem.Quantity /rtotar ==>Subtotal + ShippingPrice  
         public DateTimeOffset OrderDate { get; init; } = DateTimeOffset.Now;
         public string PaymentIntentId { get; init; } = string.Empty;
+        public decimal   Total { get; init; }
+
     }
 }
