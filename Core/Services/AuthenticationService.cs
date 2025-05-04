@@ -47,8 +47,8 @@ namespace Services
         private async Task<string> CreateTokenAsync(User user)
         {
             var jwtoptions =_options.Value;
-            //Create Claim
-            var authClaims = new List<Claim>
+            //Create Private Claim
+            var PrivateClaims = new List<Claim>
             {
                 new(ClaimTypes.Name, user.DisplayName),
                 new(ClaimTypes.Email, user.Email)
@@ -57,7 +57,7 @@ namespace Services
             var Roles = await _userManager.GetRolesAsync(user);
             //many to Many
             foreach(var role in Roles)
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
+                PrivateClaims.Add(new Claim(ClaimTypes.Role, role));
             // Create Key 
             var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtoptions.Secretkey ));
             // Create Algorithm
@@ -66,7 +66,7 @@ namespace Services
             var Token = new JwtSecurityToken(
                 issuer: jwtoptions.Issuer,              //backend
                 audience: jwtoptions?.Audience,
-                claims:   authClaims ,
+                claims:   PrivateClaims ,
                  expires: DateTime.UtcNow.AddDays(jwtoptions.DurationInDays) 
                  ,signingCredentials: Algorithm
                 );
