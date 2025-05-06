@@ -1,4 +1,4 @@
-﻿namespace Domain.Exceptions
+﻿namespace Domain.Exceptions.NotFoundExcipitions
 {
     public class Product_Not_Found_Ex : NotFound_Excption
     {

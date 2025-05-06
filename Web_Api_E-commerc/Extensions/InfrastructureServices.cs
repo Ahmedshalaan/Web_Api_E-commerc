@@ -40,10 +40,12 @@ namespace Web_Api_E_commerc.Extensions
             
             Services.AddDbContext<IdentityAppDbContext>(options =>
               options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+
             Services.ConfigureJwt(configuration);
             return Services;
         }
-        public static IServiceCollection ConfigureJwt(this IServiceCollection Services, IConfiguration configuration)
+        private static IServiceCollection ConfigureJwt(this IServiceCollection Services, IConfiguration configuration)
         {
             var jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
             //validate ON Token

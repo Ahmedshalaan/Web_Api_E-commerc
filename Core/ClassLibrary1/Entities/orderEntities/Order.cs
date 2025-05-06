@@ -21,8 +21,7 @@ namespace Domain.Entities.orderEntities
             this.paymentStatus = paymentStatus;
             this.deliveryMethod = deliveryMethod;
              SubTotal = subTotal;
-         }
-
+         } 
         public string UserEmail { get; set; }
         public OrderAddress  shippingAddress { get; set; }
         //order ==> Sandwich[orderItem] ==> Coffee [orderItem02] ==> Pizza [orderItem03]
