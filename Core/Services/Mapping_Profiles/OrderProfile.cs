@@ -1,5 +1,7 @@
-﻿ using Domain.Entities.orderEntities;
+﻿using Domain.Entities.Idenetity;
+using Domain.Entities.orderEntities;
 using Shared.orderDto;
+using OrderAddress = Domain.Entities.orderEntities.OrderAddress;
 
 namespace Services.Mapping_Profiles
 {
@@ -7,7 +9,8 @@ namespace Services.Mapping_Profiles
     {
         public OrderProfile() {
             //Shiping Address
-            CreateMap<OrderAddress,AddressDto>();
+            CreateMap<OrderAddress,AddressDto>().ReverseMap();
+            CreateMap<Address,AddressDto>().ReverseMap();
 
         CreateMap< DeliveryMethod,DeliveryMethodResultDto>();
 

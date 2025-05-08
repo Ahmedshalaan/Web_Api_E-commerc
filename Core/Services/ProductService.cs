@@ -6,6 +6,7 @@ global using Domain.Entities;
 global using Services.Specifications;
 using Shared.Dto;
 using Domain.Exceptions;
+using Domain.Exceptions.NotFoundExcipitions;
 
 namespace Services
 {

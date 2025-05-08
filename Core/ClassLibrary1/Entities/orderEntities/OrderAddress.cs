@@ -7,9 +7,9 @@
         {
         }
 
-        public OrderAddress(string fristName, string lastName, string country, string city, string street, User user, string userId)
+        public OrderAddress(string firstName, string lastName, string country, string city, string street, User user, string userId)
         {
-            FristName = fristName;
+            FirstName = firstName;
             LastName = lastName;
             Country = country;
             City = city;
@@ -18,7 +18,7 @@
             UserId = userId;
         }
 
-        public string FristName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Country { get; set; }
         public string City { get; set; }

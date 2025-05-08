@@ -18,8 +18,7 @@ namespace Domain.Entities.orderEntities
             UserEmail = userEmail;
             this.shippingAddress = shippingAddress;
             OrderItems = orderItems;
-            this.paymentStatus = paymentStatus;
-            this.deliveryMethod = deliveryMethod;
+             this.deliveryMethod = deliveryMethod;
              SubTotal = subTotal;
          } 
         public string UserEmail { get; set; }

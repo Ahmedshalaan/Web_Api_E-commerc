@@ -5,7 +5,7 @@ using Shared.orderDto;
 namespace Services
 {
     internal class OrderService
-        (Mapper _mapper,
+        (IMapper _mapper,
         IBasketReposotory _basketReposotory,
         IUnitOfWork _unitOfWork
         ) : IOrderService

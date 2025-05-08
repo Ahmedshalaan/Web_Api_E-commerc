@@ -5,7 +5,7 @@ using Shared.Dto;
 
 namespace Presentation
 {
-    [Authorize]
+    //[Authorize]
      
     public class BasketController(IService_Manager _service_Manager) :ApiController  
     {
