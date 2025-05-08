@@ -7,7 +7,8 @@ using Shared.ErrorModels;
 using System.Net;
 
 namespace Presentation
-{      [Authorize]                               //Primary Ctor               //install microsoft.AspNetCore.App               
+{
+//[Authorize]                               //Primary Ctor               //install microsoft.AspNetCore.App               
     public class ProductsController(IService_Manager service_Manager) : ApiController
     {
         #region Get All Products

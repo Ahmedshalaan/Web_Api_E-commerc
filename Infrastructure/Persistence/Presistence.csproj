@@ -15,4 +15,9 @@
     <ProjectReference Include="..\..\Core\ClassLibrary1\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Identity\" />
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿
+using Domain.Entities.orderEntities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Presistence.Data
@@ -75,6 +76,26 @@ namespace Presistence.Data
                         await _dbcontext.SaveChangesAsync();
                     }
                 }
+
+                // ======================== Seed DeliveryMethods ========================
+
+
+                if (!_dbcontext.DeliveryMethods.Any())
+                {
+                    // Read data from JSON file
+                    var deliveryData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\delivery.json");
+
+                    // Deserialize into C# objects
+                    var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+
+                    // Add to Db & SaveChanges
+                    if (deliveries?.Count > 0)
+                    {
+                        await _dbcontext.DeliveryMethods.AddRangeAsync(deliveries);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+                }
+
             }
             catch (Exception ex)
             {
