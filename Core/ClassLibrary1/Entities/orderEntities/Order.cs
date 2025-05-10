@@ -4,17 +4,16 @@ namespace Domain.Entities.orderEntities
 {
     public class Order :BaseEntitiyID<Guid>
     {
-        public Order(string paymentIntentId)
+        public Order( )
         {
-            PaymentIntentId = paymentIntentId;
+             
         }
 
         public Order(string userEmail,
             OrderAddress shippingAddress,
             ICollection<OrderItem> orderItems,
              DeliveryMethod deliveryMethod,
-             decimal subTotal
-,
+             decimal subTotal ,
              string paymentIntentId)
         {
             UserEmail = userEmail;

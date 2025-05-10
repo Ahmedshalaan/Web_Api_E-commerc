@@ -7,8 +7,7 @@ namespace Services.Specifications
     {
         public OrderWithpaymentIntentSpacification(string paymentIntentId) : base(x => x.PaymentIntentId == paymentIntentId)
         {
-            AddInclude(o => o.deliveryMethod);
-            AddInclude(o => o.OrderItems);
+            
         }
     } 
 }
