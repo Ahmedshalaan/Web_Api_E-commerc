@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.orderEntities;
-using Domain.Exceptions;
 using Domain.Exceptions.NotFoundExcipitions;
 using Shared.orderDto;
 namespace Services
@@ -18,9 +17,9 @@ namespace Services
 
             // 2. OrderItems => Basket[BasketId] => BasketItems ==> OrderItems   
             var basket = await _basketReposotory.GetBasketAsync(orderRequst.BasketId)
-                ?? throw new BasketNotFoundExcption(orderRequst.BasketId);
+                             ?? throw new BasketNotFoundExcption(orderRequst.BasketId);
 
-            //Get Item Add Basket ==> OrderItem
+            //Get Item Add Basket ==> OrderItem  one to many ==>>Foreach
             var orderItems = new List<OrderItem>();
             foreach (var item in basket.Items)
             {
@@ -34,21 +33,37 @@ namespace Services
             var DelivaryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>()
                 .GetByIdAsync(orderRequst.DeliveryMethodId)
                 ?? throw new DeliveryMethodNotFoundEx(orderRequst.DeliveryMethodId);
-            // 4. SubTotal
-            var subTotal = orderItems.Sum(x => x.Price * x.Quantity) + DelivaryMethod.Price;
+
+              // 4. SubTotal   
+              //I Achieve الى جاى زى الى عنداى ولا لا ف الدفع      
+            var orderRepository = _unitOfWork.GetRepository<Order, Guid>();
+            var existOrder = await orderRepository.GetByIdAsync(new OrderWithpaymentIntentSpacification(basket.PaymentIntentId!));
+
+            if (existOrder != null) 
+              orderRepository.Delete(existOrder);
+            
+
+                var subTotal = orderItems.Sum(x => x.Price * x.Quantity) + DelivaryMethod.Price;
+
             // 5. Create Order
-            var order = new Order(userEmail, address, orderItems, DelivaryMethod, subTotal);
+
+
+            var order = new Order(userEmail, address, orderItems, DelivaryMethod, subTotal, basket.PaymentIntentId!);
+
             // 6. Save To DB
-            await _unitOfWork.GetRepository<Order, Guid>().AddAsync(order);
+
+            await orderRepository.AddAsync(order);
+
             await _unitOfWork.SaveChangesAsync();
+
             // Map<Order, OrderResult> & Return
+
             return _mapper.Map<OrderResultDto>(order);
-
-
 
         }
 
-        private OrderItem CreateOrder(BasketItems item, Product productItem) => new OrderItem
+        private OrderItem CreateOrder(BasketItems item, Product productItem) =>
+            new OrderItem
             (new ProuductinOrderItem
             (productItem.Id
              , productItem.Name
@@ -65,7 +80,7 @@ namespace Services
 
         }
 
-        public   async Task<OrderResultDto> GetOrderByIdAsync(Guid id)
+        public async Task<OrderResultDto> GetOrderByIdAsync(Guid id)
         {
             //Get Order By ==>use Id ==> use Spacification Design Pattern
             var order = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(new OrderWithIncludeSapcifications(id)) ?? throw new OrderNotFoundEx(id);
@@ -75,7 +90,7 @@ namespace Services
 
         public async Task<IEnumerable<OrderResultDto>> GetOrdersForUserByEmailAsync(string userEmail)
         {
-            var orders =await _unitOfWork.GetRepository<Order, Guid>()
+            var orders = await _unitOfWork.GetRepository<Order, Guid>()
                 //Get Order By ==>use Email ==> use Spacification Design Pattern 
                 .GetAllAsync(new OrderWithIncludeSapcifications(userEmail));
             return _mapper.Map<IEnumerable<OrderResultDto>>(orders);

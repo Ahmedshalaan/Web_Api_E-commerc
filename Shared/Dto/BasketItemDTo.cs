@@ -12,7 +12,6 @@ namespace Shared.Dto
 
         [Range(1, 99,ErrorMessage = "Quantity Must Be At Least one Item And Max Value 99!")]
         public int Quantity { get; init; } //product quantity
-        public string Brand { get; init; } //product brand
-        public string Category { get; init; } //product Catergory
+      
     }
 }

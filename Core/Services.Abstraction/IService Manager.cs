@@ -8,5 +8,6 @@
         public IBasketService  basketService { get; }
         public IAuthenticationService   authenticationService { get; }
         public IOrderService    orderService { get; }
+        public IpaymentService      ipaymentService { get; }
     }
 }
