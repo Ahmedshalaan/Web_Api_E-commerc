@@ -30,13 +30,17 @@ namespace Services
             //c=Configuring  Stripe API Key Using the Sectrt Key from => appsettings.json
             //                                           ["StripSettings:SecrtKey"];
             StripeConfiguration.ApiKey = _Configuration.GetSection("StripSettings")["SecrtKey"];
+
             //Retrive Basket  By Id
-            var basket = await _BasketRepository.GetBasketAsync(BasketId) ?? throw new BasketNotFoundExcption(BasketId);
-            foreach (var item in basket.Items)
+            var basket = await _BasketRepository.GetBasketAsync(BasketId) 
+                              ?? throw new BasketNotFoundExcption(BasketId);
+
+            foreach (var item in basket.Items)  // one to many
             {
                 //Get Product Price from Db
                 var product = await _UnitOfWork.GetRepository<Product, int>()
-                    .GetByIdAsync(item.Id) ?? throw new Product_Not_Found_Ex(item.Id);
+                                     .GetByIdAsync(item.Id) 
+                                      ?? throw new Product_Not_Found_Ex(item.Id);
                 //Update Item Price
                 item.Price = product.Price;
             }
@@ -46,8 +50,11 @@ namespace Services
 
             //Get DeliveryMethod from Db
             var deliveryMethod = await _UnitOfWork.GetRepository<DeliveryMethod, int>()
-                    .GetByIdAsync(basket.DeliveryMethodId.Value) ?? throw new DeliveryMethodNotFoundEx(basket.DeliveryMethodId.Value);
-            //Assign Shipping Price to Basket
+                    .GetByIdAsync(basket.DeliveryMethodId.Value) 
+                    ??
+                    throw new DeliveryMethodNotFoundEx(basket.DeliveryMethodId.Value);
+
+            //Assign Shipping Price to Basket for Database
             basket.ShipingPrice = deliveryMethod.Price;
             // Calculate Total Price = Acctule Price At DB 
             var amount = (long)(basket.Items.Sum(i => i.Price * i.Quantity) + basket.ShipingPrice) * 100;  //casting

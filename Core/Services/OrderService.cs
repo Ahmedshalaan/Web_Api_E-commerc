@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.orderEntities;
-using Domain.Exceptions;
 using Domain.Exceptions.NotFoundExcipitions;
 using Shared.orderDto;
 namespace Services
@@ -35,7 +34,7 @@ namespace Services
                 .GetByIdAsync(orderRequst.DeliveryMethodId)
                 ?? throw new DeliveryMethodNotFoundEx(orderRequst.DeliveryMethodId);
 
-            // 4. SubTotal   
+              // 4. SubTotal   
               //I Achieve الى جاى زى الى عنداى ولا لا ف الدفع      
             var orderRepository = _unitOfWork.GetRepository<Order, Guid>();
             var existOrder = await orderRepository.GetByIdAsync(new OrderWithpaymentIntentSpacification(basket.PaymentIntentId!));
@@ -63,7 +62,8 @@ namespace Services
 
         }
 
-        private OrderItem CreateOrder(BasketItems item, Product productItem) => new OrderItem
+        private OrderItem CreateOrder(BasketItems item, Product productItem) =>
+            new OrderItem
             (new ProuductinOrderItem
             (productItem.Id
              , productItem.Name
