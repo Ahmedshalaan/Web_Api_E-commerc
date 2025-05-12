@@ -2,8 +2,10 @@
 using Domain.Entities.orderEntities;
 using Domain.Exceptions.NotFoundExcipitions;
 using Microsoft.Extensions.Configuration;
+using Services.Specifications;
 using Shared.Dto;
 using Stripe;
+using Stripe.Forwarding;
 
 namespace Services
 {
@@ -12,7 +14,8 @@ namespace Services
         IConfiguration _Configuration,
          IUnitOfWork _UnitOfWork,
         IMapper _Mapper)
-        : IpaymentService
+       : IpaymentService 
+        
     {
         // install package Stripe.net in ==>>Service
         //[=========================================]
@@ -95,5 +98,69 @@ namespace Services
             await _BasketRepository. CreateOrUpdateBasketAsync(basket);
             return _Mapper.Map<BasketDTo>(basket);
         }
+
+        public async Task UpdateOrderPaymentStuts(string requst, string header)
+        {
+            var endpointSecret = _Configuration.GetSection("StripSettings")["endpointSecret"];
+
+            var stripeEvent = EventUtility.ConstructEvent(
+                    requst,
+                   header,
+                    endpointSecret // Make sure this is defined (from your Stripe settings)
+                    ,throwOnApiVersionMismatch: false
+                );
+            var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+            // Handle the event
+            switch (stripeEvent.Type)
+            {
+                case EventTypes.PaymentIntentSucceeded:
+                    { 
+                        await UpdatePaymentSucceeded(paymentIntent!.Id);
+                        break;
+                    }
+
+                case EventTypes.PaymentIntentPaymentFailed:
+                    {
+                        await UpdatepaymentFeiald(paymentIntent!.Id);
+
+                        break;
+                    }
+
+                default:
+                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                    break;
+            }
+
+
+
+        }
+        #region  Successeded_or_Failed_PaymentStatus()
+
+        private async Task UpdatePaymentSucceeded(string paymentIntentId)
+        {
+            var orderRepo = _UnitOfWork.GetRepository<Order, Guid>();
+
+            var order = await orderRepo.GetByIdAsync(new OrderWithpaymentIntentSpacification(paymentIntentId))
+                         ?? throw new Exception("Order not found for PaymentIntentId: " + paymentIntentId);
+
+            order.paymentStatus = OrderPaymentStatus.PaymentPaid; // Correct status for success
+            orderRepo.Update(order);
+
+            await _UnitOfWork.SaveChangesAsync();
+        }
+
+        private async Task UpdatepaymentFeiald(string paymentIntentId)
+        {
+            var orderRepo = _UnitOfWork.GetRepository<Order, Guid>();
+
+            var order = await orderRepo.GetByIdAsync(new OrderWithpaymentIntentSpacification(paymentIntentId))
+                         ?? throw new Exception("Order not found for PaymentIntentId: " + paymentIntentId);
+
+            order.paymentStatus = OrderPaymentStatus.PaymentFailed; // Correct status for success
+            orderRepo.Update(order);
+
+            await _UnitOfWork.SaveChangesAsync();
+        }
+        #endregion
     }
 }
