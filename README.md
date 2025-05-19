@@ -21,7 +21,9 @@ Infrastructure
 
 Shared
 ├── Dto (Data Transfer Objects)
+
 ├── ErrorModels (Standard error responses)
+
 ├── JwtOptions.cs (JWT Config)
 └── PaginatedResult.cs (Pagination logic)
 
