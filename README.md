@@ -68,40 +68,45 @@ Web_Api_E-commerc
 ## 📁 Sample Data
 
 Sample seed data can be found in:
+```
 Infrastructure/Persistence/Data/Seeding/
 ├── brands.json
 ├── delivery.json
 ├── products.json
 └── types.json
-
+```
 ---
 
 ## 🧪 Example Endpoints
+```
 GET /api/products
 GET /api/products/{id}
 POST /api/account/login
 POST /api/account/register
 GET /api/orders
 POST /api/orders
-
+```
 ---
 
 ## 📜 Entity Overview
 
 ### Products:
+```
 - `Product`
 - `ProductBrand`
 - `ProductType`
-
+```
 ### Orders:
+```
 - `Order`
 - `OrderItem`
 - `DeliveryMethod`
-
+```
 ### Identity:
+```
 - `User`
 - `Address`
-
+```
 ---
 
 ## 🛡️ Authentication
