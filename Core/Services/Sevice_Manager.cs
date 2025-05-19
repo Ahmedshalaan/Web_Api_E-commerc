@@ -11,7 +11,7 @@ namespace Services
         private readonly Lazy<IBasketService> _basketService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<IOrderService> _orderService;
-        private readonly Lazy<IpaymentService> _ipaymentService;
+        private readonly Lazy<IpaymentService> _paymentService;
 
         public Sevice_Manager(IUnitOfWork unitOfWork, IMapper 
             mapper, IBasketReposotory basketService,UserManager<User> userManager,IOptions<JwtOptions> options,IConfiguration configuration)
@@ -20,7 +20,7 @@ namespace Services
             _basketService = new Lazy<IBasketService>(() => new BasketService(basketService, mapper));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, options, mapper));
             _orderService = new Lazy<IOrderService>(() => new OrderService(mapper, basketService, unitOfWork));
-            _ipaymentService = new Lazy<IpaymentService>(() => new PayementService(basketService,configuration,unitOfWork,mapper));
+            _paymentService = new Lazy<IpaymentService>(() => new PayementService(basketService,configuration,unitOfWork,mapper));
         }
 
         //Signature for Each And Every Service
@@ -32,7 +32,7 @@ namespace Services
 
         public IOrderService orderService => _orderService.Value;
 
-        public IpaymentService ipaymentService => _ipaymentService.Value;
+        public IpaymentService ipaymentService => _paymentService.Value;
     }
 
 }
