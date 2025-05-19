@@ -1,60 +1,127 @@
-# E-commerce Web API
+# 🛒 E-Commerce Web API (.NET 8)
 
-A modular and scalable .NET Core-based Web API project for a complete E-commerce system, built using Domain-Driven Design (DDD) principles.
-
-## 🧱 Project Structure
-
-The solution is organized into clear layers following clean architecture:
-
-### 1. **Core**
-Contains domain models, interfaces, and business logic.
-
-- **Entities**: Definitions for `Product`, `Order`, `User`, etc.
-- **Contracts**: Interfaces for repositories and services (`IGenericRepository`, `IUnitOfWork`, etc.)
-- **Specifications**: Custom query specifications.
-- **Exceptions**: Custom exception handling logic.
-
-### 2. **Infrastructure**
-Implements the abstractions from the Core layer.
-
-- **Persistence**: 
-  - Entity Framework DbContexts and configurations
-  - Seeding sample data from JSON files
-- **Repositories**: Implements data access logic.
-- **Presentation**: Controllers for handling API endpoints.
-
-### 3. **Shared**
-Contains common DTOs, error models, and helper classes.
-
-- **DTOs**: Models for transferring data (`ProductResultDto`, `OrderItemDto`, etc.)
-- **ErrorModels**: Standardized error responses.
-- **JWT & Pagination**: Token configuration and pagination helpers.
-
-### 4. **Web API**
-Entry point of the application.
-
-- **Extensions**: Dependency injection setup for services.
-- **Middlewares**: Global error handling.
-- **Controllers**: Top-level routing and request processing.
-- **Factories**: Standardized API responses.
+This project is a modular **E-Commerce Web API** built using **ASP.NET Core 8**, following **Clean Architecture** and **Domain-Driven Design (DDD)** principles. The solution is structured for scalability, maintainability, and separation of concerns.
 
 ---
 
-## 🚀 Features
+## 📂 Project Structure
+/Core
+├── Domain
+│ ├── Contracts (interfaces)
+│ └── Entities (Domain models)
+├── Exceptions (Custom errors)
+└── absSpecifications.cs (Specification pattern)
 
-- Clean architecture with DDD
-- Entity Framework Core with code-first migrations
-- Repository & Unit of Work patterns
-- AutoMapper and DTOs for clean API responses
-- JWT-based Authentication
-- Role-based Authorization
-- Redis caching support
-- Global error handling middleware
+Infrastructure
+├── Presentation (Controllers)
+└── Persistence
+├── Data (DbContext, Seeding, Configurations)
+├── Repositories (EFCore implementations)
+└── Migrations (EF Core migrations)
+
+Shared
+├── Dto (Data Transfer Objects)
+├── ErrorModels (Standard error responses)
+├── JwtOptions.cs (JWT Config)
+└── PaginatedResult.cs (Pagination logic)
+
+Web_Api_E-commerc
+├── Controllers (Entry point endpoints)
+├── Extensions (Service registration)
+├── Middleware (Global error handler)
+└── Program.cs (Main entry point)
 
 ---
 
-## 📦 Getting Started
+## ✅ Features
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/your-repo.git
+- 🧱 **Clean Architecture** with DDD
+- 🔐 **JWT Authentication** & Authorization
+- 🛍️ **Products & Orders** domain modeling
+- 🧾 **DTO Mapping** for secure data handling
+- 📦 **Repository + Unit of Work** patterns
+- 💾 **Entity Framework Core** with migrations
+- 🚀 **Redis caching** support
+- ⚠️ **Custom global error handling middleware**
+- 📤 **Seeding support** from JSON files
+- 🔍 **Specification Pattern** for queries
+- 📑 **Swagger UI** integration (optional)
+- 📮 **Postman Collection** for API testing
+
+---
+
+## 🔧 Technologies Used
+
+- [.NET 8](https://dotnet.microsoft.com/)
+- Entity Framework Core
+- SQL Server
+- Redis
+- AutoMapper
+- JWT Authentication
+- Swagger (optional)
+- Visual Studio 2022 / VS Code
+
+---
+
+## 📁 Sample Data
+
+Sample seed data can be found in:
+Infrastructure/Persistence/Data/Seeding/
+├── brands.json
+├── delivery.json
+├── products.json
+└── types.json
+
+---
+
+## 🧪 Example Endpoints
+GET /api/products
+GET /api/products/{id}
+POST /api/account/login
+POST /api/account/register
+GET /api/orders
+POST /api/orders
+
+---
+
+## 📜 Entity Overview
+
+### Products:
+- `Product`
+- `ProductBrand`
+- `ProductType`
+
+### Orders:
+- `Order`
+- `OrderItem`
+- `DeliveryMethod`
+
+### Identity:
+- `User`
+- `Address`
+
+---
+
+## 🛡️ Authentication
+
+Uses **JWT Bearer Tokens**:
+
+- Token is issued upon login.
+- Use `[Authorize]` attribute to protect endpoints.
+- Add the token to headers as shown below:
+
+```http
+Authorization: Bearer {your_token_here}
+
+
+🧱 Clean Architecture Layers
+Core: Domain models, interfaces, and exceptions
+
+Infrastructure: Data access, EF Core, Redis
+
+Shared: DTOs, error handling models, config
+
+Web API: Presentation logic, entry point, middlewares
+
+
+
