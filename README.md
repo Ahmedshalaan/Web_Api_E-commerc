@@ -5,25 +5,25 @@ This project is a modular **E-Commerce Web API** built using **ASP.NET Core 8**,
 ---
 
 ## 📂 Project Structure
+
+```
 /Core
 ├── Domain
-│ ├── Contracts (interfaces)
-│ └── Entities (Domain models)
+│   ├── Contracts (interfaces)
+│   └── Entities (Domain models)
 ├── Exceptions (Custom errors)
 └── absSpecifications.cs (Specification pattern)
 
 Infrastructure
 ├── Presentation (Controllers)
 └── Persistence
-├── Data (DbContext, Seeding, Configurations)
-├── Repositories (EFCore implementations)
-└── Migrations (EF Core migrations)
+    ├── Data (DbContext, Seeding, Configurations)
+    ├── Repositories (EFCore implementations)
+    └── Migrations (EF Core migrations)
 
 Shared
 ├── Dto (Data Transfer Objects)
-
 ├── ErrorModels (Standard error responses)
-
 ├── JwtOptions.cs (JWT Config)
 └── PaginatedResult.cs (Pagination logic)
 
@@ -32,7 +32,7 @@ Web_Api_E-commerc
 ├── Extensions (Service registration)
 ├── Middleware (Global error handler)
 └── Program.cs (Main entry point)
-
+```
 ---
 
 ## ✅ Features
