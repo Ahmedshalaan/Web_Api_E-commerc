@@ -9,5 +9,6 @@
         public IAuthenticationService   authenticationService { get; }
         public IOrderService    orderService { get; }
         public IpaymentService      ipaymentService { get; }
+        public   ICacheService cacheService { get; }
     }
 }

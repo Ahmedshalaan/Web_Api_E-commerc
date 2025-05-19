@@ -12,6 +12,7 @@ namespace Presentation
     public class ProductsController(IService_Manager service_Manager) : ApiController
     {
         #region Get All Products
+        [RedisCache]
         [HttpGet] //Get L:BaseUrl/api/Products
         public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecParams parameters)
         {

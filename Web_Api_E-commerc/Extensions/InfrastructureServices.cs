@@ -29,6 +29,7 @@ namespace Web_Api_E_commerc.Extensions
             Services.AddScoped<IDbIntializer, DbIntializer>();
              Services.AddScoped<IUnitOfWork, UnitofWork>();
             Services.AddScoped<IBasketReposotory, BasketReposotory>();
+            Services.AddScoped<ICachingRepository, CachingRepository>();
           
 
             Services.AddDbContext<ApplicationDbcontext>(options =>
