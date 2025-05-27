@@ -18,7 +18,12 @@ namespace Presistence.Repositraces
 
         public async Task SetAsync(string key, object value, TimeSpan duration)
         {
-            var serializedValue = JsonSerializer.Serialize(value);
+            var SerilizedOption = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+             
+            };
+            var serializedValue = JsonSerializer.Serialize(value, SerilizedOption);
             await _database.StringSetAsync(key, serializedValue, duration);
         }
     }
